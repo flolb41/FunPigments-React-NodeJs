@@ -1,0 +1,57 @@
+
+.App {
+  text-align: center;
+  
+}
+
+a:hover {
+  text-decoration: none;
+  color: wheat;
+}
+
+header {
+  background: url("../assets/header-waves.jpg")
+}
+.container {
+  align-items: center;
+  margin: 5% auto;
+}
+h1 {
+  color: white;
+  font-family: 'Dancing Script', cursive;
+}
+h2, p {
+  text-align: center;
+}
+.register h4, .login h4 {
+  font-family: 'Dancing Script', cursive;
+  text-decoration: underline blue;
+  text-underline-offset: 5px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+header {
+  display: flex;
+}
+
+.h-part {
+  margin: auto;
+  
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

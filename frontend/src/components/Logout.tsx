@@ -4,9 +4,8 @@ import { Navigate } from 'react-router-dom';
 const Logout = () => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        localStorage.removeItem('token');
         localStorage.removeItem('user');
-        return <Navigate to={'/'} />
+       return <Navigate to={'/'} />
     }
     return (
         <div className="container">

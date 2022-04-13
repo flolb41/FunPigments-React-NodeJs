@@ -54,28 +54,27 @@ const updateUser = (req: Request, res: Response, next: NextFunction) => {
 
 /*OK Controller servant à créer un nouvel utilisateur sur la base de données */
 const registerUser = (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.body);
     bcrypt.hash(req.body.password, 10)
         .then((hash: string) => {
+            const UserObject = { ...req.body, password: hash};
             const NewUser = new User({
-                username: req.body.username,
-                email: req.body.email,
-                password: hash,
-                city: req.body.city,
-                thumbnail: req.body.thumbnail,
+                ...UserObject,
+                thumbnail: `${req.protocol}://${req.get('host')}/images/users/${req.body.thumbnail}`,
             });
+            console.log(NewUser);
             NewUser
                 .save()
                 .then((User: any) => {
                     res.status(201).send({
                         user: {
+                            id: User._id,
                             username: User.username,
                             email: User.email,
                             city: User.city,
                             thumbnail: User.thumbnail,
+                            token: jwt.sign({ _id: User._id }, SECRET_KEY, { expiresIn: "24h" }),
+                            isAuth: true,
                         },
-                        token: jwt.sign({ _id: User._id }, SECRET_KEY, { expiresIn: "24h" }),
-                        isAuth: true,
                         message: "Compte créé avec succès!",
                     })
                 })
@@ -102,13 +101,15 @@ const loginUser = (req: Request, res: Response, next: NextFunction) => {
                         } else {
                             res.status(200).send({
                                 user: {
+                                    id: User._id,
                                     username: User.username,
                                     email: User.email,
                                     city: User.city,
                                     thumbnail: User.thumbnail,
-                                },
-                                token: jwt.sign({ _id: User._id }, SECRET_KEY, { expiresIn: "24h" }),
-                                isAuth: true,
+                                    token: jwt.sign({ _id: User._id }, SECRET_KEY, { expiresIn: "24h" }),
+                                    isAdmin: User.isAdmin,
+                                    isAuth: true,
+                                },   
                             });
                         }
                     })

@@ -87,7 +87,7 @@ const Register: FunctionComponent = () => {
     e.preventDefault();
     const isFormValid = validateForm();
 
-    /*if (isFormValid) {
+    if (isFormValid) {
       setMessage("Tentative de connexion en cours...");
       AuthService.register(form.username.value, form.password.value, form.email.value, form.city.value, form.thumbnail.value)
         .then((isAuthenticated) => {
@@ -101,7 +101,7 @@ const Register: FunctionComponent = () => {
         .catch((err: any) => {
           setMessage(err.response.data.message);
         });
-    }*/
+    }
   };
   return (
     <form onSubmit={(e) => handleSubmit(e)}>

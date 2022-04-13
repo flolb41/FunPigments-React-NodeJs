@@ -16,6 +16,8 @@ type Form = {
 
 const Login = () => {
 
+  const [isLogged, setIsLogged] = useState(false);
+
   const [form, setForm] = useState<Form>({
     username: { value: "" },
     password: { value: "" }
@@ -45,7 +47,7 @@ const Login = () => {
     }
 
     // Validate password
-    if (form.password.value.length < 3) {
+    if (form.password.value.length < 6) {
       const errorMessage: string = "Le mot de passe doit contenir au moins 6 caractères.";
       const newField: Field = { value: form.password.value, error: errorMessage, isValid: false }
       newForm = { ...form, password: newField };
@@ -61,28 +63,27 @@ const Login = () => {
 
   const navigate = useNavigate();
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-
     e.preventDefault();
     const isFormValid = validateForm();
-
-    if (isFormValid) {
+    if (isLogged) {
+      setMessage("Vous êtes déjà connecté.");
+    } else if (isFormValid) {
       setMessage("Tentative de connexion en cours...");
-      /*AuthService.login(form.username.value, form.password.value)    
-        .then(() => {
-          if (AuthService.isAuthenticated === true) {
-            setMessage("Vous êtes connecté.");
-            navigate("/");
-          } else {
+      AuthService.login(form.username.value, form.password.value) 
+        .then(isAuthenticated => {
+          if (!isAuthenticated) {
             setMessage("Le pseudo ou le mot de passe est incorrect.");
-            return
+            return;
           }
+            setIsLogged(true);
+            navigate("/home");
         })
         .catch((err: any) => {
           setMessage(err.response.data.message);
         });
-    }*/
     }
   };
+
   return (
     <form onSubmit={(e) => handleSubmit(e)}>
       <div className="row">
@@ -120,5 +121,6 @@ const Login = () => {
     </form>
   );
 };
+
 
 export default Login; 

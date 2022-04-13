@@ -1,31 +1,44 @@
 import React, { FunctionComponent } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Navigation from "../components/Navigation";
 import "../style/App.css";
+import AuthService from "../services/authentication-service";
 
 const Header: FunctionComponent = () => {
-  const [isLogged, setIsLogged] = React.useState(false);
-  
+  const isLogged = localStorage.getItem("user") !== null;
+  console.log(isLogged);
+
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  console.log(user);
+
+  const navigate = useNavigate();
+
+  const logout = () => {
+    AuthService.logout();
+    navigate("/login");
+  };
 
   return (
     <header className="app-header">
       <div className="user-infos">
         {isLogged ? (
-          <div className="logout">
-            <NavLink
-              to={"/logout"}
-              className="btn-floating btn-large waves-effect waves-light red"
-            >
-              <i className="fa-solid fa-right-from-bracket"></i>
+          <div className="user-infos">
+            <p>{user.username}</p>
+            <NavLink className="btn waves-light blue" to="/profile">
+              Profile
             </NavLink>
+            <button onClick={logout} className="btn wave-light red">
+              <i className="fa-solid fa-right-from-bracket"></i>
+              Déconnexion
+            </button>
           </div>
         ) : (
           <div className="login">
             <NavLink
               to={"/login"}
-              className="btn-floating btn-large waves-effect waves-light green"
+              className=" btn-large waves-effect waves-light green"
             >
-              <i className="fa-solid fa-right-to-bracket"></i>
+              Connection
             </NavLink>
           </div>
         )}

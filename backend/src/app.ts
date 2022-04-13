@@ -44,7 +44,7 @@ export class App {
         this.app.locals.routes = discover( this.app );
         this.app.use('/api/colomatos/', colomatosRoutes);
         this.app.use('/api/defis/', defisRoutes);
-        this.app.use('/api/auth', usersRoutes);  
+        this.app.use('/api/auth/', usersRoutes);  
     }
 
     /** Connxion à MongoDb */
